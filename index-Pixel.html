@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Retarb Audio Kit</title>
+  <link rel="stylesheet" href="stylez.css" />
+  <link rel="icon" href="https://fav.farm/💀" />
+</head>
+
+<body>
+  <div class="keys">
+    <div data-key="65" class="key">
+      <kbd>A</kbd>
+      <span class="sound">bruh</span>
+    </div>
+    <div data-key="83" class="key">
+      <kbd>S</kbd>
+      <span class="sound">goofy</span>
+    </div>
+    <div data-key="68" class="key">
+      <kbd>D</kbd>
+      <span class="sound">kururing</span>
+    </div>
+    <div data-key="70" class="key">
+      <kbd>F</kbd>
+      <span class="sound">kurukuru</span>
+    </div>
+    <div data-key="71" class="key">
+      <kbd>G</kbd>
+      <span class="sound">P1</span>
+    </div>
+    <div data-key="72" class="key">
+      <kbd>H</kbd>
+      <span class="sound">P2</span>
+    </div>
+    <div data-key="74" class="key">
+      <kbd>J</kbd>
+      <span class="sound">S1</span>
+    </div>
+  </div>
+
+  <audio data-key="65" src="realsounds/bruh-sound-effect.mp3"></audio>
+  <audio data-key="83" src="realsounds/goofy-ahh-sounds.mp3"></audio>
+  <audio data-key="68" src="realsounds/kuru ring.mp3"></audio>
+  <audio data-key="70" src="realsounds/kurukuru.mp3"></audio>
+  <audio data-key="71" src="realsounds/prtheesh-audio-1.mp3"></audio>
+  <audio data-key="72" src="realsounds/pratheesh-audio-2.mp3"></audio>
+  <audio data-key="74" src="realsounds/shaju-audio-1.mp3"></audio>
+
+  <script>
+    const audioElements = document.querySelectorAll('audio');
+
+    function playSound(e) {
+      const keyCode = e.keyCode || e.target.getAttribute('data-key');
+      const audio = document.querySelector(`audio[data-key="${keyCode}"]`);
+      const key = document.querySelector(`.key[data-key="${keyCode}"]`);
+      if (!audio) return;
+
+      // Stop any currently playing audio
+      audioElements.forEach(audioElement => {
+        audioElement.pause();
+        audioElement.currentTime = 0;
+      });
+
+      // Play the new audio
+      audio.play();
+      audio.currentTime = 0;
+      key.classList.add("playing");
+    }
+
+    // Handle keyboard input
+    window.addEventListener('keydown', function (e) {
+      playSound(e);
+    });
+
+    // Handle touch input
+    const keys = document.querySelectorAll('.key');
+    keys.forEach(key => {
+      key.addEventListener('touchend', function (e) {
+        playSound({ target: key });
+      });
+    });
+
+    // Remove transition effects
+    function remTrans(e) {
+      if (e.propertyName !== 'transform') return;
+      this.classList.remove("playing");
+    }
+
+    keys.forEach(key => key.addEventListener('transitionend', remTrans));
+  </script>
+
+</body>
+
+</html>
